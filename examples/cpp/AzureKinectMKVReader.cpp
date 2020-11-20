@@ -29,6 +29,7 @@
 #include <chrono>
 #include <fstream>
 #include <thread>
+#include <cmath>
 
 #include "open3d/Open3D.h"
 
@@ -158,6 +159,8 @@ int main(int argc, char **argv) {
 
     bool is_geometry_added = false;
     int idx = 0;
+    uint64_t color_first_ts = 0;
+    uint64_t depth_first_ts = 0;
     if (write_image) {
         io::WriteIJsonConvertibleToJSON(
                 fmt::format("{}/intrinsic.json", output_path),
@@ -176,13 +179,18 @@ int main(int argc, char **argv) {
             }
 
             if (write_image) {
+                if (!color_first_ts)
+                    color_first_ts = im_rgbd->color_.timestamp_usec_;
+                if (!depth_first_ts)
+                    depth_first_ts = im_rgbd->depth_.timestamp_usec_;
+                
                 auto color_file =
-                        fmt::format("{0}/color/{1:05d}.jpg", output_path, idx);
+                        fmt::format("{0}/color/{1:05d}.jpg", output_path, long(round(double(im_rgbd->color_.timestamp_usec_ - color_first_ts)/1000.0/(1000.0/30.0))));
                 utility::LogInfo("Writing to {}", color_file);
                 io::WriteImage(color_file, im_rgbd->color_);
 
                 auto depth_file =
-                        fmt::format("{0}/depth/{1:05d}.png", output_path, idx);
+                        fmt::format("{0}/depth/{1:05d}.png", output_path, long(round(double(im_rgbd->depth_.timestamp_usec_ - depth_first_ts)/1000.0/(1000.0/30.0))));
                 utility::LogInfo("Writing to {}", depth_file);
                 io::WriteImage(depth_file, im_rgbd->depth_);
 

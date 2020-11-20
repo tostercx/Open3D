@@ -241,6 +241,8 @@ public:
     int bytes_per_channel_ = 0;
     /// Image storage buffer.
     std::vector<uint8_t> data_;
+    /// Image timestamp
+    uint64_t timestamp_usec_ = 0;
 };
 
 }  // namespace geometry
