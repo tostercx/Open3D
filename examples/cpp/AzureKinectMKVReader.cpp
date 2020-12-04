@@ -133,6 +133,8 @@ int main(int argc, char **argv) {
 
     bool flag_exit = false;
     bool flag_play = true;
+    
+    /*
     visualization::VisualizerWithKeyCallback vis;
     vis.RegisterKeyCallback(GLFW_KEY_ESCAPE,
                             [&](visualization::Visualizer *vis) {
@@ -156,7 +158,8 @@ int main(int argc, char **argv) {
     utility::LogInfo(
             "Starting to play. Press [SPACE] to pause. Press [ESC] to "
             "exit.");
-
+    */
+    
     bool is_geometry_added = false;
     int idx = 0;
     uint64_t color_first_ts = 0;
@@ -174,7 +177,7 @@ int main(int argc, char **argv) {
             if (im_rgbd == nullptr) continue;
 
             if (!is_geometry_added) {
-                vis.AddGeometry(im_rgbd);
+                //vis.AddGeometry(im_rgbd);
                 is_geometry_added = true;
             }
 
@@ -198,9 +201,9 @@ int main(int argc, char **argv) {
             }
         }
 
-        vis.UpdateGeometry();
-        vis.PollEvents();
-        vis.UpdateRender();
+        //vis.UpdateGeometry();
+        //vis.PollEvents();
+        //vis.UpdateRender();
     }
 
     mkv_reader.Close();
